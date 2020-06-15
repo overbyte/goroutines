@@ -20,8 +20,9 @@ func main() {
 		go checkLink(link, c)
 	}
 
-	for i := 0; i < len(links); i++ {
-		fmt.Println("received", <-c)
+	for {
+		// receive link from channel
+		go checkLink(<-c, c)
 	}
 }
 
@@ -33,9 +34,9 @@ func checkLink(link string, c chan string) {
 		fmt.Println("Error opening link", link, ":", err)
 		c <- link
 		return
-	} else {
-		fmt.Println(">", link, "is all good")
-		c <- link
 	}
+
+	fmt.Println(">", link, "is all good")
+	c <- link
 
 }
